@@ -1,6 +1,4 @@
 import java.util.Calendar;
-import java.util.Date;
-private Date javaDate;
 
 public class Date {
 	private int day, month, year;
@@ -9,6 +7,12 @@ public class Date {
 		this.day = day;
 		this.month = month;
 		this.year = year;
+		if( !this.isValid() ) {
+			Calendar today = Calendar.getInstance();
+			this.day = today.get(Calendar.DAY_OF_MONTH);
+			this.month = today.get(Calendar.MONTH) + 1;
+			this.year = today.get(Calendar.YEAR);
+		}
 	}
 
 	public int getDay() {
@@ -36,24 +40,46 @@ public class Date {
 	}
 	
 	public boolean isAfterThan(Date other) {
-		return this.year > other.year && this.month > other.month && this.day > other.day;
+		if (this.year > other.year)
+			return true;
+		if (this.year == other.year && this.month > other.month)
+			return true;
+		if (this.year == other.year && this.month == other.month && this.day > other.day)
+			return true;
+		return false;
 	}
 	
 	public boolean isBeforeThan(Date other) {
-		return this.year < other.year && this.month < other.month && this.day < other.day;
+		if (this.year < other.year)
+			return true;
+		if (this.year == other.year && this.month < other.month)
+			return true;
+		if (this.year == other.year && this.month == other.month && this.day < other.day)
+			return true;
+		return false;
 	}
 	
 	public boolean isEqualsWith(Date other) {
 		return this.year == other.year && this.month == other.month && this.day == other.day;
 	}
 	
-	@SuppressWarnings("deprecation")
+	public boolean isValid() {
+		int max = 30;
+		if (this.month == 2 && this.year % 4 == 0) {
+			max = 30;
+			if (this.year % 100 == 0 && this.year % 400 != 0)
+				max = 28;
+		}
+		if ((this.month <= 7 && this.month % 2 ==1) || (this.month >= 8 && this.month % 2 == 0))
+			max = 31;
+		if (this.day >= 1 && this.day <= max && this.month >= 1 && this.month <= 12)
+			return true;
+		return false;
+	}
+	
 	public static Date getToday() {
-		Calendar cal = Calendar.getInstance();
-		System.out.println(cal.getTime().getDay());
-		System.out.println(cal.getTime().getMonth());
-		System.out.println(cal.getTime().getYear());
-		Date d = new Date(cal.getTime().getDay(), cal.getTime().getMonth(), cal.getTime().getYear());
+		Calendar today = Calendar.getInstance();
+		Date d = new Date(today.get(Calendar.DAY_OF_MONTH), today.get(Calendar.MONTH) + 1, today.get(Calendar.YEAR));
 		return d;
 	}
 }
