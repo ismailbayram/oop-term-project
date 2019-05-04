@@ -1,5 +1,5 @@
 public class AutoPark {
-//	private SubscribedVehicle[] subscribedVehicles;
+	private SubscribedVehicle[] subscribedVehicles;
 	private ParkRecord[] parkRecords;
 	private double hourlyFee, incomeDaily;
 	
