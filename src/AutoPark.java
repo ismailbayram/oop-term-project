@@ -96,7 +96,9 @@ public class AutoPark {
 				if(vehicle.getSubscription() == null) {
 					ParkRecord parkRecord = this.searchParkRecord(vehicle);
 					this.incomeDaily += this.hourlyFee * (parkRecord.getEnterTime().getDifference(exit));
+					parkRecords.remove(parkRecord);
 				}
+				vehicles.remove(vehicle);
 			}
 		}
 		return true;
