@@ -3,9 +3,14 @@ public class ParkRecord {
 	private Time enterTime, exitTime;
 	private Vehicle vehicle;
 	
-	public ParkRecord(Time enter, Time exit) {
+	public ParkRecord(Time enter, Time exit, Vehicle vehicle) {
 		this.enterTime = enter;
 		this.exitTime = exit;
+		this.vehicle = vehicle;
+	}
+	public ParkRecord(Time enter, Vehicle vehicle) {
+		this.vehicle = vehicle;
+		this.enterTime = enter;
 	}
 
 	public Time getEnterTime() {
