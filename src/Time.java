@@ -35,4 +35,9 @@ public class Time {
 		totalMin = totalMin + ((selfHour - other.getHour()) * 60);
 		return totalMin;
 	}
+	
+	@Override
+	public String toString() {
+		return this.hour + ":" + this.minute;
+	}
 }

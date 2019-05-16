@@ -42,10 +42,6 @@ public class AutoPark {
 		return null;
 	}
 	public boolean addVehicle(SubscribedVehicle subscribedVehicle) {
-		if(subscribedVehicles.size() == capacity) {
-			this.enLargeVehicleArray();
-			System.out.println("Kapasite arttirildi");
-		}
 		if(this.searchVehicle(subscribedVehicle.getPlate()) == null) {
 			subscribedVehicles.add(subscribedVehicle);
 			return true;
@@ -55,7 +51,7 @@ public class AutoPark {
 	}
 	
 	private void enLargeVehicleArray() {
-		this.capacity += this.capacity;
+		this.capacity++;
 	}
 	public boolean isParked(String plate) {
 		for(Vehicle vehicle: vehicles) {
@@ -66,42 +62,61 @@ public class AutoPark {
 		return false;
 	}
 	public boolean vehicleEnters(String plate, Time enter, boolean isOfficial) {
+		if(vehicles.size() == this.capacity) {
+			System.out.println("Dikkat!!! Otopark Dolu");
+			this.enLargeVehicleArray();
+			System.out.println("Kapasite bir arttirildi");
+			// Kapasite dolu olunca kapasite 1 arttirilip aracin girmesine izin verilir.
+			// Arac girisine izin vermemek icin burda geriye false donulmelidir. 
+		}
 		if(isOfficial)
 			return true;
 		
 		if(this.isParked(plate))
 			return false;
 		
-		if(this.searchVehicle(plate) != null)
+		if(this.searchVehicle(plate) != null) {
 			if(this.searchVehicle(plate).getSubscription().isValid()) {
-				vehicles.add(this.searchVehicle(plate));
+				this.vehicles.add(this.searchVehicle(plate));
 				return true;
 			}
+		}
 		Vehicle vehicle = new RegularVehicle(plate);
-		vehicles.add(vehicle);
+		this.vehicles.add(vehicle);
 		ParkRecord parkRecord = new ParkRecord(enter, vehicle);
 		parkRecords.add(parkRecord);
 		return true;
 	}
 	public ParkRecord searchParkRecord(Vehicle vehicle) {
 		for(ParkRecord parkRecord: parkRecords) {
-			if(vehicle.equals(parkRecord.getVehicle()))
+			if(vehicle.equals(parkRecord.getVehicle()) && parkRecord.getExitTime() == null)
 				return parkRecord;
 		}
 		return null;
 	}
 	public boolean vehicleExits(String plate, Time exit) {
-		for(Vehicle vehicle: vehicles) {
+		for(Vehicle vehicle: this.vehicles) {
 			if(plate.equals(vehicle.getPlate())) {
 				if(vehicle.getSubscription() == null) {
 					ParkRecord parkRecord = this.searchParkRecord(vehicle);
-					this.incomeDaily += this.hourlyFee * (parkRecord.getEnterTime().getDifference(exit));
-					parkRecords.remove(parkRecord);
+					if(parkRecord != null) {
+						parkRecord.setExitTime(exit);
+						this.incomeDaily += this.hourlyFee * ((exit.getDifference(parkRecord.getEnterTime())) / 60 + 1);
+					}
 				}
 				vehicles.remove(vehicle);
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "AutoPark [subscribedVehicles=" + subscribedVehicles + ", parkRecords=" + parkRecords + ", vehicles="
+				+ vehicles + ", hourlyFee=" + hourlyFee + ", incomeDaily=" + incomeDaily + ", capacity=" + capacity
+				+ "]";
+	}
+	
 	
 }

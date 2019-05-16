@@ -26,4 +26,10 @@ public class SubscribedVehicle implements Vehicle {
 	public boolean isSpecial() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "SubscribedVehicle [plate=" + plate + ", subscription=" + subscription + "]";
+	}
+	
 }

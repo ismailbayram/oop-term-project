@@ -11,5 +11,16 @@ public class Main {
 		autoPark.addVehicle(vehicle);
 		System.out.println(sub.getVehicle().getSubscription().isValid());
 		System.out.println(autoPark.searchVehicle("34FH3773"));
+		Time enterTime = new Time(13, 58);
+		Time exitTime = new Time(20, 45);
+		System.out.println(autoPark.getIncomeDaily());
+		autoPark.vehicleEnters("34FH3773", enterTime, false);
+		autoPark.vehicleExits("34FH3773", exitTime);
+		System.out.println(autoPark.getIncomeDaily());
+		autoPark.vehicleEnters("34EB2938", enterTime, false);
+		System.out.println(autoPark);
+		autoPark.vehicleExits("34EB2938", exitTime);
+		System.out.println(autoPark.getIncomeDaily());
+		System.out.println(autoPark);
 	}
 }

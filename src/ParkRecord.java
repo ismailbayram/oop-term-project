@@ -40,4 +40,9 @@ public class ParkRecord {
 	public int getParkingDuration() {
 		return this.exitTime.getDifference(this.enterTime);
 	}
+	@Override
+	public String toString() {
+		return "ParkRecord [enterTime=" + enterTime + ", exitTime=" + exitTime + ", vehicle=" + vehicle + "]";
+	}
+	
 }
