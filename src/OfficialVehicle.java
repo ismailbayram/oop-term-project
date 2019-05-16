@@ -1,5 +1,5 @@
 
-public class OfficialVehicle {
+public class OfficialVehicle implements Vehicle{
 	private String plate;
 	
 	public OfficialVehicle(String plate) {
