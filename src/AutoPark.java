@@ -69,15 +69,20 @@ public class AutoPark {
 			// Kapasite dolu olunca kapasite 1 arttirilip aracin girmesine izin verilir.
 			// Arac girisine izin vermemek icin burda geriye false donulmelidir. 
 		}
-		if(isOfficial)
-			return true;
-		
 		if(this.isParked(plate))
 			return false;
+		
+		if(isOfficial) {
+			Vehicle v = new OfficialVehicle(plate);
+			this.vehicles.add(v);
+			this.parkRecords.add(new ParkRecord(enter, v));
+			return true;
+		}
 		
 		if(this.searchVehicle(plate) != null) {
 			if(this.searchVehicle(plate).getSubscription().isValid()) {
 				this.vehicles.add(this.searchVehicle(plate));
+				parkRecords.add(new ParkRecord(enter, this.searchVehicle(plate)));
 				return true;
 			}
 		}
@@ -96,13 +101,14 @@ public class AutoPark {
 	}
 	public boolean vehicleExits(String plate, Time exit) {
 		for(Vehicle vehicle: this.vehicles) {
-			if(plate.equals(vehicle.getPlate())) {
-				if(vehicle.getSubscription() == null) {
-					ParkRecord parkRecord = this.searchParkRecord(vehicle);
-					if(parkRecord != null) {
-						parkRecord.setExitTime(exit);
-						this.incomeDaily += this.hourlyFee * ((exit.getDifference(parkRecord.getEnterTime())) / 60 + 1);
-					}
+			if(vehicle.getPlate().equals(plate)) {
+				ParkRecord parkRecord = searchParkRecord(vehicle);
+				parkRecord.setExitTime(exit);
+				if(this.searchVehicle(plate) != null && this.searchVehicle(plate).getSubscription().isValid()) {
+					System.out.println("Arac cikisi yapildi. Para odenmesine gerek yok");
+				} else {
+					System.out.println("Arac cikisi yapildi. Odenen miktar :" + this.hourlyFee * ((exit.getDifference(parkRecord.getEnterTime())) / 60));
+					this.incomeDaily += this.hourlyFee * ((exit.getDifference(parkRecord.getEnterTime())) / 60);
 				}
 				vehicles.remove(vehicle);
 				return true;
