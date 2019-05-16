@@ -41,4 +41,9 @@ public class Subscription {
 		return this.begin.isBeforeThan(Date.getToday()) && this.end.isAfterThan(Date.getToday());
 
 	}
+
+	@Override
+	public String toString() {
+		return begin + ", end=" + end;
+	}
 }

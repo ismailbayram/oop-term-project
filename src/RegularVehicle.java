@@ -21,4 +21,9 @@ public class RegularVehicle implements Vehicle {
 	public boolean isSpecial() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "RegularVehicle [plate=" + plate + "]";
+	}
 }

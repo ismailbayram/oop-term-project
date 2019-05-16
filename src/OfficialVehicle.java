@@ -21,4 +21,9 @@ public class OfficialVehicle {
 	public boolean isSpecial() {
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "OfficialVehicle [plate=" + plate + "]";
+	}
 }
